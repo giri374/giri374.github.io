@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio — My Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #22222e;
+      --accent: #c8ff00;
+      --accent2: #ff4d6d;
+      --text: #e8e8f0;
+      --muted: #606070;
+      --card-hover: #16161f;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── HEADER ── */
+    header {
+      padding: 3rem 4rem 2rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .logo {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .tagline {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: right;
+      line-height: 1.6;
+    }
+
+    /* ── GRID ── */
+    main {
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* ── PROJECT CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .card:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+
+    .card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .card:nth-child(3) {
+      animation-delay: 0.15s;
+    }
+
+    .card:nth-child(4) {
+      animation-delay: 0.2s;
+    }
+
+    .card:nth-child(5) {
+      animation-delay: 0.25s;
+    }
+
+    .card:nth-child(6) {
+      animation-delay: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 60px rgba(200, 255, 0, 0.08), 0 0 0 1px var(--accent);
+      background: var(--card-hover);
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(20%);
+      transition: filter 0.3s;
+    }
+
+    .card:hover .card-thumb {
+      filter: grayscale(0%);
+    }
+
+    .card-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #1a1a25 0%, #0d0d18 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-thumb-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg,
+          transparent,
+          transparent 20px,
+          rgba(200, 255, 0, 0.015) 20px,
+          rgba(200, 255, 0, 0.015) 21px);
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: var(--accent);
+      color: #000;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      letter-spacing: 0.08em;
+    }
+
+    .card-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+
+    .card-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      padding: 0 1.5rem 1.25rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+    }
+
+    /* ── MODAL ── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      width: 100%;
+      max-width: 780px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(30px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-backdrop.open .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 2.2rem;
+      height: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      z-index: 10;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .modal-close:hover {
+      border-color: var(--accent2);
+      color: var(--accent2);
+    }
+
+    .modal-video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+    }
+
+    .modal-video iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .modal-content {
+      padding: 2rem;
+    }
+
+    .modal-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+    }
+
+    .modal-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .modal-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .modal-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: #a0a0b0;
+      line-height: 1.9;
+      margin-bottom: 2rem;
+    }
+
+    .modal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent);
+      color: #000;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .modal-link:hover {
+      background: #d4ff33;
+      transform: translateX(3px);
+    }
+
+    .modal-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ── ADD BUTTON ── */
+    .add-card {
+      background: transparent;
+      border: 2px dashed var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      min-height: 260px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      transition: border-color 0.3s, color 0.3s;
+      animation: fadeUp 0.6s 0.35s ease both;
+    }
+
+    .add-card:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .add-icon {
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid currentColor;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem;
+        gap: 1rem;
+      }
+
+      main {
+        padding: 2rem;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1.5rem 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">My<span>.</span>Portfolio</div>
+    <div class="tagline">
+      SELECTED WORKS<br />
+      2024 — 2025
+    </div>
+  </header>
+
+  <main id="projectGrid">
+    <!-- Cards injected by JS -->
+  </main>
+
+  <footer>
+    <span>© 2025 — Portfolio</span>
+    <span>BUILT WITH HTML / CSS / JS</span>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      <div class="modal-video" id="modalVideo"></div>
+      <div class="modal-content">
+        <div class="modal-meta">
+          <span class="modal-num" id="modalNum"></span>
+          <div class="modal-tags" id="modalTags"></div>
+        </div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-desc" id="modalDesc"></p>
+        <a class="modal-link" id="modalLink" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
+          XEM TRÊN GITHUB
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── DATA: Thêm/sửa dự án tại đây ───────────────────────────────────────────
+    const projects = [
+      {
+        title: "E-Commerce Platform",
+        description: "Một nền tảng thương mại điện tử đầy đủ tính năng được xây dựng với React và Node.js. Hỗ trợ thanh toán trực tuyến, quản lý đơn hàng, và giao diện quản trị mạnh mẽ.",
+        thumbnail: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ", // thay bằng embed URL thực
+        github: "https://github.com/yourusername/ecommerce",
+        tags: ["React", "Node.js", "MongoDB"]
+      },
+      {
+        title: "AI Chat Interface",
+        description: "Ứng dụng chat tích hợp với API của các mô hình ngôn ngữ lớn. Hỗ trợ nhiều cuộc trò chuyện song song, lịch sử chat, và xuất dữ liệu PDF.",
+        thumbnail: "https://images.unsplash.com/photo-1676299081847-824916de030a?w=600&q=80",
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        github: "https://github.com/yourusername/ai-chat",
+        tags: ["Python", "FastAPI", "OpenAI"]
+      },
+      {
+        title: "Dashboard Analytics",
+        description: "Bảng điều khiển phân tích dữ liệu thời gian thực với các biểu đồ tương tác. Kết nối trực tiếp với nhiều nguồn dữ liệu và hỗ trợ xuất báo cáo tự động.",
+        thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80",
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        github: "https://github.com/yourusername/dashboard",
+        tags: ["Vue.js", "D3.js", "PostgreSQL"]
+      },
+      {
+        title: "Mobile Task Manager",
+        description: "Ứng dụng quản lý công việc đa nền tảng xây dựng với Flutter. Hỗ trợ đồng bộ đám mây, nhắc nhở thông minh, và cộng tác nhóm theo thời gian thực.",
+        thumbnail: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        github: "https://github.com/yourusername/task-manager",
+        tags: ["Flutter", "Firebase", "Dart"]
+      },
+      {
+        title: "Portfolio Generator",
+        description: "Công cụ tạo portfolio tự động từ dữ liệu GitHub. Người dùng chỉ cần nhập username và hệ thống sẽ tự động generate một trang web đẹp mắt.",
+        thumbnail: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80",
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        github: "https://github.com/yourusername/portfolio-gen",
+        tags: ["Next.js", "GitHub API", "Tailwind"]
+      }
+    ];
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    const grid = document.getElementById('projectGrid');
+    const backdrop = document.getElementById('modalBackdrop');
+    const modalClose = document.getElementById('modalClose');
+
+    function renderCards() {
+      grid.innerHTML = '';
+      projects.forEach((p, i) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.setAttribute('tabindex', '0');
+        card.innerHTML = `
+      ${p.thumbnail
+            ? `<img class="card-thumb" src="${p.thumbnail}" alt="${p.title}" loading="lazy" />`
+            : `<div class="card-thumb-placeholder">NO PREVIEW</div>`
+          }
+      <span class="card-tag">${p.tags[0] || 'PROJECT'}</span>
+      <div class="card-body">
+        <div class="card-number">PROJECT — ${String(i + 1).padStart(2, '0')}</div>
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-desc">${p.description}</p>
+      </div>
+      <div class="card-footer">
+        ${p.tags.map(t => `<span class="badge">${t}</span>`).join('')}
+      </div>
+    `;
+        card.addEventListener('click', () => openModal(i));
+        card.addEventListener('keydown', e => { if (e.key === 'Enter') openModal(i); });
+        grid.appendChild(card);
+      });
+
+      // Add "+" card
+
+      grid.appendChild(addCard);
+    }
+
+    function getEmbedUrl(url) {
+      // YouTube
+      const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`;
+      // GitHub raw video / direct video
+      return url;
+    }
+
+    function openModal(index) {
+      const p = projects[index];
+      const embedUrl = getEmbedUrl(p.video);
+      const isDirectVideo = !embedUrl.includes('youtube.com/embed') && !embedUrl.includes('youtu.be');
+
+      document.getElementById('modalVideo').innerHTML = isDirectVideo
+        ? `<video controls autoplay style="width:100%;height:100%;background:#000"><source src="${embedUrl}" /></video>`
+        : `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+
+      document.getElementById('modalNum').textContent = `PROJECT — ${String(index + 1).padStart(2, '0')}`;
+      document.getElementById('modalTitle').textContent = p.title;
+      document.getElementById('modalDesc').textContent = p.description;
+      document.getElementById('modalLink').href = p.github;
+      document.getElementById('modalTags').innerHTML = p.tags.map(t => `<span class="badge">${t}</span>`).join('');
+
+      backdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      // Stop video
+      setTimeout(() => {
+        document.getElementById('modalVideo').innerHTML = '';
+      }, 300);
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    renderCards();
+  </script>
+</body>
+
+</html>
